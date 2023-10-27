@@ -1,0 +1,65 @@
+{
+  "name": "exp-automation-my-person-holds",
+  "description": "uses userId from oauth jwt context",
+  "parameters": [
+    {
+      "name": "ethosApiKey",
+      "type": "string",
+      "default": ""
+    }
+  ],
+  "apiDefinition": {
+    "authType": "userToken",
+    "httpVerb": "GET"
+  },
+  "pipeline": [
+    "Get user",
+    "Get my person holds",
+    "For Each",
+    "JavaScript Transform",
+    "Reducer"
+  ],
+  "segments": {
+    "Get user": {
+      "class": "JavaScriptTransform",
+      "config": {
+        "pushUndefined": true,
+        "stopOnError": false,
+        "draft": false,
+        "code": "function transform (message, context) {\n  message.payload.userId = context.get('__user').id;\n  return message;\n}\n"
+      }
+    },
+    "Get my person holds": {
+      "class": "ethosProxyGetFilter",
+      "config": {
+        "resource": "person-holds",
+        "filter": "?person={{userId}}",
+        "acceptVersions": [
+          "6"
+        ],
+        "cache": false,
+        "queryByPost": false,
+        "ignoreErrors": false,
+        "apiKey": "ethosApiKey"
+      }
+    },
+    "For Each": {
+      "class": "forEach"
+    },
+    "JavaScript Transform": {
+      "class": "JavaScriptTransform",
+      "config": {
+        "pushUndefined": true,
+        "stopOnError": false,
+        "draft": false,
+        "code": "function transform (message, context) {\n  const overrides = {\n    id: message.payload.id,\n    comment: message.payload.comment,\n    notificationIndicator: message.payload.comment,\n    categoryType: message.payload.type.category,\n    startOn: message.payload.startOn,\n    endOn: message.payload.endOn\n  };\n  \n  message.payload = overrides;\n  return message;\n}\n"
+      }
+    },
+    "Reducer": {
+      "class": "reducer",
+      "config": {
+        "accumulator": "payload"
+      }
+    }
+  }
+}

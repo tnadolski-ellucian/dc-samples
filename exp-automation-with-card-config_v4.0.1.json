@@ -1,0 +1,29 @@
+{
+  "name": "exp-automation-with-card-config",
+  "parameters": [
+    {
+      "name": "ethosApiKey",
+      "type": "string"
+    }
+  ],
+  "apiDefinition": {
+    "authType": "userToken",
+    "httpVerb": "GET"
+  },
+  "pipeline": [
+    "Ethos Proxy Get"
+  ],
+  "segments": {
+    "Ethos Proxy Get": {
+      "class": "ethosProxyGet",
+      "config": {
+        "resource": "academic-levels",
+        "acceptVersions": [
+          "6"
+        ],
+        "cache": false,
+        "ignoreErrors": false
+      }
+    }
+  }
+}

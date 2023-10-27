@@ -1,0 +1,30 @@
+{
+  "name": "exp-automation-all-persons",
+  "parameters": [
+    {
+      "name": "ethosApiKey",
+      "type": "string",
+      "default": ""
+    }
+  ],
+  "apiDefinition": {
+    "authType": "userToken",
+    "httpVerb": "GET"
+  },
+  "pipeline": [
+    "Ethos Proxy Get"
+  ],
+  "segments": {
+    "Ethos Proxy Get": {
+      "class": "ethosProxyGet",
+      "config": {
+        "resource": "persons",
+        "acceptVersions": [
+          "12"
+        ],
+        "cache": false,
+        "ignoreErrors": false
+      }
+    }
+  }
+}

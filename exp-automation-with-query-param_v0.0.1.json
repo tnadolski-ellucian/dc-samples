@@ -1,0 +1,28 @@
+{
+  "name": "exp-automation-with-query-param",
+  "parameters": [
+    {
+      "name": "dummyParam",
+      "type": "string",
+      "default": "default"
+    }
+  ],
+  "apiDefinition": {
+    "authType": "userToken",
+    "httpVerb": "GET"
+  },
+  "pipeline": [
+    "JavaScript Transform"
+  ],
+  "segments": {
+    "JavaScript Transform": {
+      "class": "JavaScriptTransform",
+      "config": {
+        "pushUndefined": true,
+        "stopOnError": false,
+        "draft": false,
+        "code": "function transform (message, context) {\n  message.payload = context.get('dummyParam');\n  return message;\n}\n"
+      }
+    }
+  }
+}
