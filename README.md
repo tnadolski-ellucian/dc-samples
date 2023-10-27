@@ -3,7 +3,6 @@
 ## Extension
 
 The extension assume the included 5 pipelines are available to your environment-stage.
-Currently, I've setup my examples for Experience Extensibility automation in https://experience-dev-devinternal.elluciancloud.com/e3eethosbannerbigtest/
 The examples covered are:
 
 1. Preview with card config (ethosApiKey supplied as card config in preview)
